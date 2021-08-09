@@ -8,3 +8,5 @@ dist
 node_modules
 TODOs.md
 .vscode
+# intellij stuff
+.idea/
