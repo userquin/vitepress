@@ -73,7 +73,7 @@ export const createMarkdownRenderer = (
       permalink: true,
       permalinkBefore: true,
       permalinkSymbol: '#',
-      permalinkAttrs: () => ({ 'aria-hidden': true }),
+      permalinkAttrs: () => ({ tabindex: '-1', 'aria-hidden': true }),
       ...options.anchor
     })
     .use(toc, {

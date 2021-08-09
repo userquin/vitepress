@@ -1,15 +1,28 @@
 <script lang="ts">
 export default {
+  props: {
+    label: {
+      type: String,
+      default: 'Toggle navigation menu'
+    }
+  },
   emits: ['toggle']
 }
 </script>
 
 <template>
-  <div class="sidebar-button" @click="$emit('toggle')">
+  <div
+    :aria-label="label"
+    role="button"
+    tabindex="0"
+    class="sidebar-button"
+    @keydown.enter="$emit('toggle')"
+    @click="$emit('toggle')"
+  >
     <svg
       class="icon"
       xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
+      focusable="false"
       role="img"
       viewBox="0 0 448 512"
     >
