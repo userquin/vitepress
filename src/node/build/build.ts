@@ -5,6 +5,7 @@ import { resolveConfig } from '../config'
 import { renderPage } from './render'
 import { OutputChunk, OutputAsset } from 'rollup'
 import ora from 'ora'
+import { resolvePwaPlugin } from './pwa'
 
 export async function build(root: string, buildOptions: BuildOptions = {}) {
   const start = Date.now()
@@ -12,7 +13,27 @@ export async function build(root: string, buildOptions: BuildOptions = {}) {
   process.env.NODE_ENV = 'production'
   const siteConfig = await resolveConfig(root)
 
+  const pwaPlugin = await resolvePwaPlugin()
+  const pwaPluginConfigured = pwaPlugin !== undefined
+
   try {
+    siteConfig.vite = siteConfig.vite || {}
+    if (pwaPluginConfigured) {
+      siteConfig.vite.define = siteConfig.vite.define || {}
+      // todo@userquin: check output for pwa, must be .vitepress/dist
+      siteConfig.vite.define['process.env.PWA'] = 'true'
+    } else {
+      // if the plugin is not configured we need to exclude from rollup, since build will fail
+      siteConfig.vite.build = siteConfig.vite.build || {}
+      siteConfig.vite.build.rollupOptions =
+        siteConfig.vite.build.rollupOptions || {}
+      // if external is configured, the user should fix it
+      if (!siteConfig.vite.build.rollupOptions.external)
+        siteConfig.vite.build.rollupOptions.external = [
+          'virtual:pwa-register/vue'
+        ]
+    }
+
     const [clientResult, , pageToHashMap] = await bundle(
       siteConfig,
       buildOptions
@@ -44,7 +65,8 @@ export async function build(root: string, buildOptions: BuildOptions = {}) {
           appChunk,
           cssChunk,
           pageToHashMap,
-          hashMapString
+          hashMapString,
+          pwaPlugin !== undefined
         )
       }
     } catch (e) {
@@ -56,6 +78,20 @@ export async function build(root: string, buildOptions: BuildOptions = {}) {
     spinner.stopAndPersist({
       symbol: okMark
     })
+    if (pwaPlugin) {
+      spinner.start('generating PWA...')
+      try {
+        await pwaPlugin.generateSW()
+      } catch (e) {
+        spinner.stopAndPersist({
+          symbol: failMark
+        })
+        throw e
+      }
+      spinner.stopAndPersist({
+        symbol: okMark
+      })
+    }
   } finally {
     await fs.remove(siteConfig.tempDir)
   }

@@ -4,6 +4,9 @@
   "scripts": {
     "dev": "node ../../bin/vitepress dev",
     "build": "node ../../bin/vitepress build",
-    "serve": "node ../../bin/vitepress serve"
+    "serve": "serve .vitepress/dist"
+  },
+  "devDependencies": {
+    "vite-plugin-pwa": "^0.10.0"
   }
 }

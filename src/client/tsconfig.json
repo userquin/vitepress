@@ -6,7 +6,7 @@
     "target": "esnext",
     "module": "esnext",
     "lib": ["ESNext", "DOM"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "vite-plugin-pwa/client"],
     "paths": {
       "/@theme/*": ["theme-default/*"],
       "vitepress": ["index.ts"]

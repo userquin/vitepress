@@ -142,5 +142,20 @@ export namespace DefaultTheme {
      * Label for this locale in the language dropdown.
      */
     label?: string
+
+    /**
+     * PWA: new content text
+     */
+    pwaNewContentText?: string
+
+    /**
+     * PWA: reload button text
+     */
+    pwaReloadButton?: string
+
+    /**
+     * PWA: close button text
+     */
+    pwaCloseButton?: string
   }
 }

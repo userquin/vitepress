@@ -14,7 +14,8 @@ export async function renderPage(
   appChunk: OutputChunk,
   cssChunk: OutputAsset,
   pageToHashMap: Record<string, string>,
-  hashMapString: string
+  hashMapString: string,
+  pwa: boolean
 ) {
   const { createApp } = require(path.join(config.tempDir, `app.js`))
   const { app, router } = createApp()
@@ -67,6 +68,10 @@ export async function renderPage(
     ...filterOutHeadDescription(pageData.frontmatter.head)
   )
 
+  const webManifest = pwa
+    ? `<link rel="prefetch" href="${siteData.base}manifest.webmanifest">\n<link rel="manifest" href="${siteData.base}manifest.webmanifest">`
+    : ''
+
   const html = `
 <!DOCTYPE html>
 <html lang="${siteData.lang}">
@@ -79,6 +84,7 @@ export async function renderPage(
     }">
     ${stylesheetLink}
     ${preloadLinks}
+    ${webManifest}
     ${renderHead(head)}
   </head>
   <body>

@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "types": ["node", "jest"],
+    "types": ["node", "jest", "vite-plugin-pwa", "vite-plugin-pwa/client"],
     "paths": {
       "src/*": ["src/*"],
       "client/*": ["src/client/*"],

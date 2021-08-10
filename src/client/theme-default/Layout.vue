@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { ref, computed, watch, defineAsyncComponent } from 'vue'
-import { useRoute, useData } from 'vitepress'
+import { useRoute, useData, inBrowser } from 'vitepress'
 import { isSideBarEmpty, getSideBarConfig } from './support/sideBar'
 
 // components
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
 import Page from './components/Page.vue'
+
+const ReloadPrompt = process.env.PWA
+  ? defineAsyncComponent(() => {
+    if (inBrowser) {
+      return import('./components/ReloadPrompt.vue')
+    }
+    else {
+      return import('./components/EmptyReloadPrompt.vue')
+    }
+  })
+  : defineAsyncComponent(() => import('./components/EmptyReloadPrompt.vue'))
 
 const Home = defineAsyncComponent(() => import('./components/Home.vue'))
 
@@ -151,6 +162,10 @@ const pageClasses = computed(() => {
       </template>
     </Page>
   </div>
+
+  <ClientOnly>
+    <ReloadPrompt />
+  </ClientOnly>
 
   <Debug />
 </template>
