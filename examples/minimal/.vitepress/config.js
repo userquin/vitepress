@@ -36,7 +36,10 @@ const config = {
     docsDir: 'docs',
     editLinks: true,
     editLinkText: 'Edit this page',
-    lastUpdated: 'Last Updated'
+    lastUpdated: 'Last Updated',
+    pwa: {
+      enableCloseOnUpdate: true
+    }
     /*
       algolia: {
         apiKey: 'todo@antfu: replace this',
@@ -47,6 +50,10 @@ const config = {
         }
       },
     */
+  },
+  async transformPage(routePath, html) {
+    console.log(`\nTransforming page hook for: ${routePath}\n`)
+    return html
   }
 }
 

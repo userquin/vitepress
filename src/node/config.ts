@@ -98,8 +98,6 @@ export async function resolveConfig(
     ? userThemeDir
     : DEFAULT_THEME_PATH
 
-  const transformPage = process.env.SSR ? userConfig.transformPage : undefined
-
   const config: SiteConfig = {
     root,
     srcDir,
@@ -116,7 +114,7 @@ export async function resolveConfig(
     alias: resolveAliases(themeDir),
     vue: userConfig.vue,
     vite: userConfig.vite,
-    transformPage
+    transformPage: userConfig.transformPage
   }
 
   return config
