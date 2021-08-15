@@ -10,6 +10,11 @@ export function usePwa(options?: RegisterSWOptions) {
   const { needRefresh, offlineReady, updateServiceWorker } =
     useRegisterSW(options)
 
+  const enableCloseOnUpdate = computed(() => {
+    const theme = site.value.themeConfig as DefaultTheme.Config
+    return theme.pwa?.enableCloseOnUpdate === true
+  })
+
   const uiData = computed(() => {
     const theme = site.value.themeConfig as DefaultTheme.Config
     const locales = theme.locales
@@ -73,6 +78,7 @@ export function usePwa(options?: RegisterSWOptions) {
   }
 
   return {
+    enableCloseOnUpdate,
     uiData,
     offlineReady,
     needRefresh,

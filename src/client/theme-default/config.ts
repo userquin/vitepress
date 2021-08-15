@@ -69,6 +69,17 @@ export namespace DefaultTheme {
       custom?: string
       placement: string
     }
+
+    /**
+     * PWA prompt.
+     */
+    pwa?: {
+      /**
+       * When new content available, show close button on prompt?
+       * @default false
+       */
+      enableCloseOnUpdate: boolean
+    }
   }
 
   // navbar --------------------------------------------------------------------
