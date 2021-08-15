@@ -35,6 +35,13 @@ export interface UserConfig<ThemeConfig = any> {
   srcExclude?: string[]
 
   /**
+   * On SSR build apply html page transform.
+   *
+   * @param html The page rendered
+   */
+  transformPage?: (routePath: string, html: string) => Promise<string>
+
+  /**
    * @deprecated use `srcExclude` instead
    */
   exclude?: string[]
@@ -57,6 +64,7 @@ export interface SiteConfig<ThemeConfig = any> {
   markdown: MarkdownOptions | undefined
   vue: VuePluginOptions | undefined
   vite: ViteConfig | undefined
+  transformPage?: (routePath: string, html: string) => Promise<string>
 }
 
 const resolve = (root: string, file: string) =>
@@ -90,6 +98,8 @@ export async function resolveConfig(
     ? userThemeDir
     : DEFAULT_THEME_PATH
 
+  const transformPage = process.env.SSR ? userConfig.transformPage : undefined
+
   const config: SiteConfig = {
     root,
     srcDir,
@@ -105,7 +115,8 @@ export async function resolveConfig(
     markdown: userConfig.markdown,
     alias: resolveAliases(themeDir),
     vue: userConfig.vue,
-    vite: userConfig.vite
+    vite: userConfig.vite,
+    transformPage
   }
 
   return config

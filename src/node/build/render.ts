@@ -72,7 +72,7 @@ export async function renderPage(
     ? `<link rel="prefetch" href="${siteData.base}manifest.webmanifest">\n<link rel="manifest" href="${siteData.base}manifest.webmanifest">`
     : ''
 
-  const html = `
+  let html = `
 <!DOCTYPE html>
 <html lang="${siteData.lang}">
   <head>
@@ -95,6 +95,10 @@ export async function renderPage(
   }"></script>
   </body>
 </html>`.trim()
+
+  if (config.transformPage) {
+    html = await config.transformPage(routePath, html)
+  }
   const htmlFileName = path.join(config.outDir, page.replace(/\.md$/, '.html'))
   await fs.ensureDir(path.dirname(htmlFileName))
   await fs.writeFile(htmlFileName, html)
