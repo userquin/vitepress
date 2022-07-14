@@ -110,7 +110,7 @@ layout: doc
 
 - Type: `Hero`
 
-This option only take effect when `layout` is set to `home`.
+This option only takes effect when `layout` is set to `home`.
 
 It defines contents of home hero section.
 
@@ -165,7 +165,7 @@ interface HeroAction {
 
 - Type: `Feature[]`
 
-This option only take effect when `layout` is set to `home`.
+This option only takes effect when `layout` is set to `home`.
 
 It defines items to display in features section.
 
@@ -204,7 +204,7 @@ interface Feature {
 
 - Type: `boolean`
 
-This option only take effect when `layout` is set to `page`.
+This option only takes effect when `layout` is **not** set to `home`.
 
 By default, the right aside will be shown, if you want to remove it, configure the option to `false`:
 
